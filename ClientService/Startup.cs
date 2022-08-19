@@ -8,6 +8,7 @@ using ClientService.EF.Data;
 using ClientService.EF.Data.Interfaces;
 using ClientService.Mappers;
 using ClientService.Models.Requests;
+using ClientService.Models.Responses;
 using ClientService.Validation;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
@@ -38,10 +39,14 @@ namespace ClientService
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(dbConnectionString));
             services.AddControllers();
 
-            services.AddTransient<IValidator<CreateCustomerRequest>, CreateCustomerRequestValidator>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
+            
+            services.AddTransient<IValidator<CreateCustomerRequest>, CreateCustomerRequestValidator>();
             services.AddTransient<ICreateCustomerCommand, CreateCustomerCommand>();
-            services.AddTransient<IDbCustomerMapper, DbCustomerMapper>();
+            services.AddTransient<IDbCreateCustomerMapper, DbCreateCustomerMapper>();
+
+            services.AddTransient<IGetCustomerInfoCommand, GetCustomerInfoCommand>();
+            services.AddTransient<IGetCustomerInfoMapper, GetCustomerInfoMapper>();
             
             services.AddSwaggerGen(c =>
             {

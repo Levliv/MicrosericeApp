@@ -20,7 +20,7 @@ namespace ClientService.Controllers
             _context = context;
         }
         
-        [HttpPost("NewCustomer")]
+        [HttpPost("CreateCustomer")]
         public CreateCustomerResponse CreateNewCustomer(
             [FromServices] ICreateCustomerCommand command,
             [FromBody] CreateCustomerRequest request)
@@ -28,21 +28,15 @@ namespace ClientService.Controllers
             return command.Execute(request);
         }
         
-        [HttpGet("GetUser")]
-        public DbCustomer? GetCustomerPersonalInfo(
-            [FromQuery] Guid customerGuid)
+        [HttpGet("GetCustomerInfo")]
+        public GetCustomerInfoResponse GetCustomerPersonalInfo(
+            [FromServices] IGetCustomerInfoCommand command,
+            [FromQuery] string customerLogin)
         {
-            CustomerRepository t = new (_context);
-            DbCustomer? customer = t.Read(customerGuid);
-            if (customer is not null)
+            return command.Execute(new GetCustomerInfoRequest
             {
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.Found;
-            }
-            else
-            {
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
-            }
-            return customer;
+                Login = customerLogin
+            });
         }
 
         [HttpPut("UpdateUserInfo")]

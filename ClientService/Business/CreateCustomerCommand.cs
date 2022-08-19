@@ -13,16 +13,16 @@ namespace ClientService.Business
     {
         private readonly IValidator<CreateCustomerRequest> _validator;
         private readonly ICustomerRepository _customerRepository;
-        private readonly IDbCustomerMapper _dbCustomerMapper;
+        private readonly IDbCreateCustomerMapper _dbCreateCustomerMapper;
 
         public CreateCustomerCommand(
             IValidator<CreateCustomerRequest> validator,
             ICustomerRepository customerRepository,
-            IDbCustomerMapper dbCustomerMapper)
+            IDbCreateCustomerMapper dbCreateCustomerMapper)
         {
             _validator = validator;
             _customerRepository = customerRepository;
-            _dbCustomerMapper = dbCustomerMapper;
+            _dbCreateCustomerMapper = dbCreateCustomerMapper;
         }
         public CreateCustomerResponse Execute(CreateCustomerRequest request)
         {
@@ -39,7 +39,7 @@ namespace ClientService.Business
 
             return new CreateCustomerResponse
             {
-                Id = _customerRepository.Create(_dbCustomerMapper.Map(request)),
+                Id = _customerRepository.Create(_dbCreateCustomerMapper.Map(request)),
                 IsSuccess = true,
                 Errors = default
             };

@@ -3,7 +3,7 @@ using ClientService.Models.Requests;
 
 namespace ClientService.Mappers
 {
-    public interface IDbCustomerMapper
+    public interface IDbCreateCustomerMapper
     {
         DbCustomer Map(CreateCustomerRequest customerRequest);
     }

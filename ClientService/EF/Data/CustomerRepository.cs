@@ -33,9 +33,9 @@ namespace ClientService.EF.Data
         /// <summary>
         /// Gets customer personal data.
         /// </summary>
-        public DbCustomer? Read(Guid customerGuid)
+        public DbCustomer? Read(string login)
         {
-            return _context.Customers.Find(customerGuid);
+            return _context.Customers.Where(customer => customer.Login == login).FirstOrDefault();
         }
 
         /// <summary>
