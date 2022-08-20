@@ -13,6 +13,7 @@ namespace ClientService.EF.DbModels
         public string? SecondName { get; set; }
         public string? Email { get; set; }
         public DateTime? DateOfRegistration { get; set; }
+        public bool IsActive { get; set; }
     }
 }
 

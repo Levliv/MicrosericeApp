@@ -5,7 +5,7 @@ namespace ClientService.Models.Responses
 {
     public record GetCustomerInfoResponse()
     {
-        public bool IsSuccess { get; set; }
+        public bool IsSuccess { get; set; } = true;
         public List<string>? Errors { get; set; }
         public Guid? Id { get; set; }
         public string? Login { get; set; } = null!;
