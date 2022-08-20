@@ -6,11 +6,11 @@ using FluentValidation;
 
 namespace ClientService.Validation
 {
-    public class GetCustomerInfoValidator : AbstractValidator<GetCustomerInfoRequest>,IGetCustomerInfoValidator
+    public class GetCustomerInfoRequestValidator : AbstractValidator<GetCustomerInfoRequest>,IGetCustomerInfoRequestValidator
     {
         private readonly Regex _loginRegex = new("^[a-zA-Z0-9]*$");
         
-        public GetCustomerInfoValidator(
+        public GetCustomerInfoRequestValidator(
             ICustomerRepository customerRepository)
         {
             RuleFor(request => request.Login)

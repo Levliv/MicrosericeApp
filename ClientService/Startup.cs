@@ -10,6 +10,7 @@ using ClientService.Mappers;
 using ClientService.Models.Requests;
 using ClientService.Models.Responses;
 using ClientService.Validation;
+using ClientService.Validation.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,7 @@ namespace ClientService
             services.AddTransient<ICreateCustomerCommand, CreateCustomerCommand>();
             services.AddTransient<IDbCreateCustomerMapper, DbCreateCustomerMapper>();
 
+            services.AddTransient<IGetCustomerInfoRequestValidator, GetCustomerInfoRequestValidator>();
             services.AddTransient<IGetCustomerInfoCommand, GetCustomerInfoCommand>();
             services.AddTransient<IGetCustomerInfoMapper, GetCustomerInfoMapper>();
             

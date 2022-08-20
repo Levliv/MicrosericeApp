@@ -6,6 +6,7 @@ using ClientService.EF.DbModels;
 using ClientService.Mappers;
 using ClientService.Models.Requests;
 using ClientService.Models.Responses;
+using ClientService.Validation;
 using ClientService.Validation.Interfaces;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
@@ -16,21 +17,22 @@ namespace ClientService.Business
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IGetCustomerInfoMapper _getCustomerInfoMapper;
-        private readonly IGetCustomerInfoValidator _getCustomerInfoValidator;
+        private readonly IGetCustomerInfoRequestValidator _getCustomerInfoRequestValidator;
 
         public GetCustomerInfoCommand(
             ICustomerRepository customerRepository,
-            IGetCustomerInfoValidator getCustomerInfoValidator,
+            IGetCustomerInfoRequestValidator getCustomerInfoRequestValidator,
             IGetCustomerInfoMapper getCustomerInfoMapper)
         {
             _customerRepository = customerRepository;
-            _getCustomerInfoValidator = getCustomerInfoValidator;
+            _getCustomerInfoRequestValidator = getCustomerInfoRequestValidator;
             _getCustomerInfoMapper = getCustomerInfoMapper;
         }
 
         public GetCustomerInfoResponse Execute(GetCustomerInfoRequest getCustomerInfoRequest)
         {
-            ValidationResult? validationResult = _getCustomerInfoValidator.Validate(getCustomerInfoRequest);
+            //ValidationResult? validationResult = _getCustomerInfoRequestValidator.Validate(getCustomerInfoRequest);
+            ValidationResult? validationResult = new ValidationResult();
             if (validationResult.IsValid)
             {
                 DbCustomer? dbCustomer = _customerRepository.Read(getCustomerInfoRequest.Login);
