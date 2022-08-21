@@ -1,4 +1,5 @@
 using ClientService.EF.Data;
+using ClientService.EF.DbModels;
 using ClientService.Models.Requests;
 using ClientService.Models.Responses;
 

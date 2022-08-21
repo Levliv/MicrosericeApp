@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ClientService.EF.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,6 +15,12 @@ namespace ClientService.EF.DbModels
         public string? Email { get; set; }
         public DateTime? DateOfRegistration { get; set; }
         public bool IsActive { get; set; }
+        public ICollection<DbOrder> Orders { get; set; }
+
+        public DbCustomer()
+        {
+            Orders = new HashSet<DbOrder>();
+        }
     }
 }
 
@@ -23,8 +30,12 @@ public class DbCustomerConfiguration : IEntityTypeConfiguration<DbCustomer>
     {
         builder
             .ToTable("Customers");
-        
+
         builder
             .HasKey(x => x.Id);
+
+        builder
+            .HasMany(customer => customer.Orders)
+            .WithOne(order => order.Customer);
     }
 }

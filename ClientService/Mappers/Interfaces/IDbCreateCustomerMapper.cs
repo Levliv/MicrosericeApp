@@ -1,7 +1,7 @@
 using ClientService.EF.DbModels;
 using ClientService.Models.Requests;
 
-namespace ClientService.Mappers
+namespace ClientService.Mappers.Interfaces
 {
     public interface IDbCreateCustomerMapper
     {

@@ -12,5 +12,6 @@ namespace ClientService.Models.Responses
         public string? FirstName { get; set; } = null!;
         public string? SecondName { get; set; }
         public string? Email { get; set; }
+        public List<GetOrderResponse> Orders { get; set; }
     };
 }

@@ -2,6 +2,7 @@ using System.Linq;
 using ClientService.Business.Interfaces;
 using ClientService.EF.Data.Interfaces;
 using ClientService.Mappers;
+using ClientService.Mappers.Interfaces;
 using ClientService.Models.Requests;
 using ClientService.Models.Responses;
 using FluentValidation;

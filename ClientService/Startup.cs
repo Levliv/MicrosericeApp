@@ -7,6 +7,7 @@ using ClientService.Business.Interfaces;
 using ClientService.EF.Data;
 using ClientService.EF.Data.Interfaces;
 using ClientService.Mappers;
+using ClientService.Mappers.Interfaces;
 using ClientService.Models.Requests;
 using ClientService.Models.Responses;
 using ClientService.Validation;
@@ -39,7 +40,8 @@ namespace ClientService
             string dbConnectionString = Configuration.GetConnectionString("SqlServerConnectionString");
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(dbConnectionString));
             services.AddControllers();
-
+            
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             
             services.AddTransient<IValidator<CreateCustomerRequest>, CreateCustomerRequestValidator>();
@@ -49,6 +51,9 @@ namespace ClientService
             services.AddTransient<IGetCustomerInfoRequestValidator, GetCustomerInfoRequestValidator>();
             services.AddTransient<IGetCustomerInfoCommand, GetCustomerInfoCommand>();
             services.AddTransient<IGetCustomerInfoMapper, GetCustomerInfoMapper>();
+
+            services.AddTransient<IDbBakedGoodToGetBakedGoodResponse, DbBakedGoodToGetBakedGoodResponse>();
+            services.AddTransient<IDbOrderToGetOrderResponse, DbOrderToGetOrderResponse>();
             
             services.AddSwaggerGen(c =>
             {

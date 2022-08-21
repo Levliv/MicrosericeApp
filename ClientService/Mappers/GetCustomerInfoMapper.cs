@@ -1,11 +1,13 @@
+using System.Collections.Generic;
 using ClientService.EF.DbModels;
+using ClientService.Mappers.Interfaces;
 using ClientService.Models.Responses;
 
 namespace ClientService.Mappers
 {
     public class GetCustomerInfoMapper : IGetCustomerInfoMapper
     {
-        public GetCustomerInfoResponse Map(DbCustomer dbCustomer)
+        public GetCustomerInfoResponse Map(DbCustomer dbCustomer, List<GetOrderResponse> getOrderResponses)
         {
             return new GetCustomerInfoResponse
             {
@@ -13,7 +15,8 @@ namespace ClientService.Mappers
                 Login = dbCustomer.Login,
                 FirstName = dbCustomer.FirstName,
                 SecondName = dbCustomer.SecondName,
-                Email = dbCustomer.Email
+                Email = dbCustomer.Email,
+                Orders = getOrderResponses
             };
         }
     }

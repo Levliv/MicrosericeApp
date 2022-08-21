@@ -1,6 +1,7 @@
 using System;
 using ClientService.EF.Data;
 using ClientService.EF.DbModels;
+using ClientService.Mappers.Interfaces;
 using ClientService.Models.Requests;
 
 namespace ClientService.Mappers

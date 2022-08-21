@@ -25,18 +25,20 @@ namespace ClientService.Controllers
             [FromServices] ICreateCustomerCommand command,
             [FromBody] CreateCustomerRequest request)
         {
-            return command.Execute(request);
+            CreateCustomerResponse createCustomerResponse = command.Execute(request);
+            if (!createCustomerResponse.IsSuccess)
+            {
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+            return createCustomerResponse;
         }
         
         [HttpGet("GetCustomerInfo")]
         public GetCustomerInfoResponse GetCustomerPersonalInfo(
             [FromServices] IGetCustomerInfoCommand command,
-            [FromQuery] string customerLogin)
+            [FromQuery] GetCustomerInfoRequest request)
         {
-            return command.Execute(new GetCustomerInfoRequest
-            {
-                Login = customerLogin
-            });
+            return command.Execute(request);
         }
 
         [HttpPut("UpdateUserInfo")]
