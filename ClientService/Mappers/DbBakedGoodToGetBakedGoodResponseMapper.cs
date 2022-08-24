@@ -4,9 +4,9 @@ using ClientService.Models.Responses;
 
 namespace ClientService.Mappers
 {
-    public class DbBakedGoodToGetBakedGoodResponse : IDbBakedGoodToGetBakedGoodResponse
+    public class DbBakedGoodToGetBakedGoodResponseMapper : IDbBakedGoodToGetBakedGoodResponseMapper
     {
-        public GetBakedGoodResponse Map(DbBakedGoodOrder dbBakedGoodOrder,DbBakedGood dbBakedGood)
+        public GetBakedGoodResponse Map(DbBakedGoodOrder dbBakedGoodOrder, DbBakedGood dbBakedGood)
         {
             return new GetBakedGoodResponse
             {

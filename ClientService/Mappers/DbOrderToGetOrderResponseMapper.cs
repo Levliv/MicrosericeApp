@@ -7,9 +7,9 @@ using ClientService.Models.Responses;
 
 namespace ClientService.Mappers
 {
-    public class DbOrderToGetOrderResponse : IDbOrderToGetOrderResponse
+    public class DbOrderToGetOrderResponseMapper : IDbOrderToGetOrderResponseMapper
     {
-        public GetOrderResponse Map(DbOrder dbOrder, List<GetBakedGoodResponse> orderBakedGoods)
+        public GetOrderResponse Map(DbOrder dbOrder, IEnumerable<GetBakedGoodResponse> orderBakedGoods)
         {
             return new GetOrderResponse
             {

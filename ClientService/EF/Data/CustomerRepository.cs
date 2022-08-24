@@ -34,53 +34,18 @@ namespace ClientService.EF.Data
             return customer.Id;
         }
 
-
-        public DbCustomer? Read2(string login)
-        {
-            var t =  _context.Customers
-                .Include(customer => customer.Orders)
-                .ThenInclude(orders => orders.BakedGoodOrders)
-                .ThenInclude(bakedGoods => bakedGoods.BakedGood)
-                .FirstOrDefault(customer => customer.Login == login);
-            return t;
-        }
-
         /// <summary>
         /// Gets customer personal data.
         /// </summary>
-        public Tuple<DbCustomer, List<Tuple<DbOrder, List<Tuple<DbBakedGood, DbBakedGoodOrder>>>>>? Read(string login)
+        public DbCustomer Read(string login)
         {
-            DbCustomer? dbCustomers = _context.Customers
+            return _context.Customers
                 .Include(customer => customer.Orders)
                 .ThenInclude(orders => orders.BakedGoodOrders)
                 .ThenInclude(bakedGoods => bakedGoods.BakedGood)
                 .FirstOrDefault(customer => customer.Login == login);
-            
-            if (dbCustomers is null)
-            {
-                return null;
-            }
-            
-            List<DbOrder> dbOrders = dbCustomers.Orders.ToList();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Found: {dbOrders.Count}");
-            List<Tuple<DbOrder, List<Tuple<DbBakedGood, DbBakedGoodOrder>>>> result2 = new ();
-            foreach (DbOrder dbOrder in dbOrders)
-            {
-                List<DbBakedGoodOrder> bakedGoodOrders = dbOrder.BakedGoodOrders.ToList();
-                List<Tuple<DbBakedGood, DbBakedGoodOrder>> result1 = new ();
-                foreach (DbBakedGoodOrder bakedGoodOrder in bakedGoodOrders)
-                {
-                    var e = Tuple.Create(bakedGoodOrder.BakedGood, bakedGoodOrder);
-                    result1.Add(e);
-                }
-
-                var i = Tuple.Create(dbOrder, result1);
-                result2.Add(i);
-            }
-            return Tuple.Create(dbCustomers, result2);
         }
-
+        
         /// <summary>
         /// Edits customer's data.
         /// </summary>
@@ -89,7 +54,7 @@ namespace ClientService.EF.Data
         /// <returns> If user to update was found: this user's Guid, otherwise: null. </returns>
         public Guid? Update(Guid customerToEditId, DbCustomer customer)
         {
-            DbCustomer? oldCustomer = _context.Customers.Find(customerToEditId);
+            DbCustomer oldCustomer = _context.Customers.Find(customerToEditId);
             if (oldCustomer is null)
             {
                 return null;
@@ -104,7 +69,7 @@ namespace ClientService.EF.Data
         
         public Guid? Update2(Guid customerToEditId, DbCustomer customer)
         {
-            DbCustomer? customerToEdit = _context.Customers.FirstOrDefault(x => x.Id == customerToEditId);
+            DbCustomer customerToEdit = _context.Customers.FirstOrDefault(x => x.Id == customerToEditId);
             if (customerToEdit is null)
             {
                 return null;
@@ -124,7 +89,7 @@ namespace ClientService.EF.Data
         /// <returns> If customer was found: Guid of the deleted customer, if not: null. </returns>
         public Guid? Delete(Guid customerToDeleteId)
         {
-            DbCustomer? customerToDelete = _context.Customers.Find(customerToDeleteId);
+            DbCustomer customerToDelete = _context.Customers.Find(customerToDeleteId);
             if (customerToDelete is null)
             {
                 return null;

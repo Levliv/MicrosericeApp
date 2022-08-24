@@ -11,8 +11,8 @@ namespace ClientService.EF.DbModels
         public Guid Id { get; set; }
         public string Login { get; set; } = null!;
         public string FirstName { get; set; } = null!;
-        public string? SecondName { get; set; }
-        public string? Email { get; set; }
+        public string SecondName { get; set; }
+        public string Email { get; set; }
         public DateTime? DateOfRegistration { get; set; }
         public bool IsActive { get; set; }
         public ICollection<DbOrder> Orders { get; set; }

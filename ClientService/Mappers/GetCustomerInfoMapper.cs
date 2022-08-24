@@ -7,7 +7,7 @@ namespace ClientService.Mappers
 {
     public class GetCustomerInfoMapper : IGetCustomerInfoMapper
     {
-        public GetCustomerInfoResponse Map(DbCustomer dbCustomer, List<GetOrderResponse> getOrderResponses)
+        public GetCustomerInfoResponse Map(DbCustomer dbCustomer, IEnumerable<GetOrderResponse> getOrderResponses)
         {
             return new GetCustomerInfoResponse
             {

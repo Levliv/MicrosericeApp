@@ -1,12 +1,11 @@
 using System.Linq;
 using ClientService.Business.Interfaces;
 using ClientService.EF.Data.Interfaces;
-using ClientService.Mappers;
 using ClientService.Mappers.Interfaces;
 using ClientService.Models.Requests;
 using ClientService.Models.Responses;
 using FluentValidation;
-using ValidationResult = FluentValidation.Results.ValidationResult;
+using FluentValidation.Results;
 
 namespace ClientService.Business
 {
@@ -27,7 +26,7 @@ namespace ClientService.Business
         }
         public CreateCustomerResponse Execute(CreateCustomerRequest request)
         {
-            ValidationResult? validationResult = _validator.Validate(request);
+            ValidationResult validationResult = _validator.Validate(request);
             if (!validationResult.IsValid)
             {
                 return new CreateCustomerResponse

@@ -7,6 +7,6 @@ namespace ClientService.Models.Responses
     {
         public DateTime OrderTime { get; set; }
         public DateTime? DeliveryTime { get; set; }
-        public List<GetBakedGoodResponse>? BakedGoods { get; set; }
+        public IEnumerable<GetBakedGoodResponse> BakedGoods { get; set; }
     }
 }

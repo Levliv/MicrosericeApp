@@ -4,8 +4,8 @@ using ClientService.Models.Responses;
 
 namespace ClientService.Mappers.Interfaces
 {
-    public interface IDbOrderToGetOrderResponse
+    public interface IDbOrderToGetOrderResponseMapper
     {
-        GetOrderResponse Map(DbOrder dbOrder, List<GetBakedGoodResponse> orderBakedGoods);
+        GetOrderResponse Map(DbOrder dbOrder, IEnumerable<GetBakedGoodResponse> orderBakedGoods);
     }
 }

@@ -6,6 +6,6 @@ namespace ClientService.Mappers.Interfaces
 {
     public interface IGetCustomerInfoMapper
     {
-        GetCustomerInfoResponse Map(DbCustomer dbCustomer, List<GetOrderResponse> getOrderResponses);
+        GetCustomerInfoResponse Map(DbCustomer dbCustomer, IEnumerable<GetOrderResponse> getOrderResponses);
     }
 }

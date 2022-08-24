@@ -52,8 +52,8 @@ namespace ClientService
             services.AddTransient<IGetCustomerInfoCommand, GetCustomerInfoCommand>();
             services.AddTransient<IGetCustomerInfoMapper, GetCustomerInfoMapper>();
 
-            services.AddTransient<IDbBakedGoodToGetBakedGoodResponse, DbBakedGoodToGetBakedGoodResponse>();
-            services.AddTransient<IDbOrderToGetOrderResponse, DbOrderToGetOrderResponse>();
+            services.AddTransient<IDbBakedGoodToGetBakedGoodResponseMapper, DbBakedGoodToGetBakedGoodResponseMapper>();
+            services.AddTransient<IDbOrderToGetOrderResponseMapper, DbOrderToGetOrderResponseMapper>();
             
             services.AddSwaggerGen(c =>
             {
