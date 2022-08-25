@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace ClientService.Validation.Interfaces
 {
-    public interface IGetCustomerInfoRequestValidator : IValidator<GetCustomerInfoRequest>
+    public interface IGetCustomerOrdersRequestValidator : IValidator<GetCustomerOrdersRequest>
     {
     }
 }

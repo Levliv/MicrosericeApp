@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 using ClientService.Business.Interfaces;
 using ClientService.EF.Data;
-using ClientService.EF.DbModels;
 using ClientService.Models.Requests;
 using ClientService.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +21,11 @@ namespace ClientService.Controllers
         }
         
         [HttpPost("CreateCustomer")]
-        public CreateCustomerResponse CreateNewCustomer(
+        public async Task<CreateCustomerResponse> CreateNewCustomer(
             [FromServices] ICreateCustomerCommand command,
             [FromBody] CreateCustomerRequest request)
         {
-            CreateCustomerResponse createCustomerResponse = command.Execute(request);
+            CreateCustomerResponse createCustomerResponse = await command.Execute(request);
             if (!createCustomerResponse.IsSuccess)
             {
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -33,31 +33,24 @@ namespace ClientService.Controllers
             return createCustomerResponse;
         }
         
-        [HttpGet("GetCustomerInfo")]
-        public GetCustomerInfoResponse GetCustomerPersonalInfo(
-            [FromServices] IGetCustomerInfoCommand command,
-            [FromQuery] GetCustomerInfoRequest request)
+        [HttpGet("GetOrders")]
+        public async Task<GetCustomerOrdersResponse> GetCustomerOrders(
+            [FromServices] IGetCustomerOrdersCommand command,
+            [FromQuery] GetCustomerOrdersRequest request)
         {
-            return command.Execute(request);
+            GetCustomerOrdersResponse customerInfoResponse = await command.Execute(request);
+            HttpContext.Response.StatusCode =
+                customerInfoResponse.IsSuccess ? (int)HttpStatusCode.OK : (int)HttpStatusCode.BadRequest;
+            return customerInfoResponse;
         }
 
-        [HttpPut("UpdateUserInfo")]
-        public Guid? UpdateClientInfo(
-            [FromQuery] Guid customerIdToEdit,
-            [FromBody] DbCustomer newCustomerInfo)
+        [HttpPut("UpdatePersonalInfo")] 
+        public async Task<EditCustomerPersonalInfoResponse> UpdateCustomerPersonalInfo(
+            [FromServices] IUpdateCustomerPersonalInfoCommand command,
+            [FromQuery] EditCustomerPersonalInfoRequest editCustomerRequest,
+            [FromBody] CreateCustomerRequest newCustomerInfo)
         {
-            CustomerRepository t = new (_context);
-            Guid? updatedCustomerId =  t.Update(customerIdToEdit, newCustomerInfo);
-            if (updatedCustomerId.HasValue)
-            {
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
-            }
-            else
-            {
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
-            }
-
-            return updatedCustomerId;
+            return await command.ExecuteAsync(editCustomerRequest, newCustomerInfo);
         }
         
         [HttpDelete("DeleteCustomer")]

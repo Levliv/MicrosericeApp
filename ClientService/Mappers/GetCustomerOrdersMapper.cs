@@ -5,11 +5,11 @@ using ClientService.Models.Responses;
 
 namespace ClientService.Mappers
 {
-    public class GetCustomerInfoMapper : IGetCustomerInfoMapper
+    public class GetCustomerOrdersMapper : IGetCustomerOrdersMapper
     {
-        public GetCustomerInfoResponse Map(DbCustomer dbCustomer, IEnumerable<GetOrderResponse> getOrderResponses)
+        public GetCustomerOrdersResponse Map(DbCustomer dbCustomer, IEnumerable<GetOrderResponse> getOrderResponses)
         {
-            return new GetCustomerInfoResponse
+            return new GetCustomerOrdersResponse
             {
                 Id = dbCustomer.Id,
                 Login = dbCustomer.Login,

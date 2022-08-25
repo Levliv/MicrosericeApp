@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using ClientService.Business.Interfaces;
 using ClientService.EF.Data.Interfaces;
 using ClientService.Mappers.Interfaces;
@@ -24,9 +25,9 @@ namespace ClientService.Business
             _customerRepository = customerRepository;
             _dbCreateCustomerMapper = dbCreateCustomerMapper;
         }
-        public CreateCustomerResponse Execute(CreateCustomerRequest request)
+        public async Task<CreateCustomerResponse> Execute(CreateCustomerRequest request)
         {
-            ValidationResult validationResult = _validator.Validate(request);
+            ValidationResult validationResult = await _validator.ValidateAsync(request);
             if (!validationResult.IsValid)
             {
                 return new CreateCustomerResponse
@@ -39,7 +40,7 @@ namespace ClientService.Business
 
             return new CreateCustomerResponse
             {
-                Id = _customerRepository.Create(_dbCreateCustomerMapper.Map(request)),
+                Id = await _customerRepository.CreateAsync(_dbCreateCustomerMapper.Map(request)),
                 IsSuccess = true,
                 Errors = default
             };

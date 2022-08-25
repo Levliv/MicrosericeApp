@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ClientService.Business;
 using ClientService.Business.Interfaces;
 using ClientService.EF.Data;
@@ -9,14 +5,11 @@ using ClientService.EF.Data.Interfaces;
 using ClientService.Mappers;
 using ClientService.Mappers.Interfaces;
 using ClientService.Models.Requests;
-using ClientService.Models.Responses;
 using ClientService.Validation;
 using ClientService.Validation.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,19 +35,32 @@ namespace ClientService
             services.AddControllers();
             
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+            
             services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IBakedGoodRepository, BakedGoodRepository>();
             
             services.AddTransient<IValidator<CreateCustomerRequest>, CreateCustomerRequestValidator>();
             services.AddTransient<ICreateCustomerCommand, CreateCustomerCommand>();
             services.AddTransient<IDbCreateCustomerMapper, DbCreateCustomerMapper>();
 
-            services.AddTransient<IGetCustomerInfoRequestValidator, GetCustomerInfoRequestValidator>();
-            services.AddTransient<IGetCustomerInfoCommand, GetCustomerInfoCommand>();
-            services.AddTransient<IGetCustomerInfoMapper, GetCustomerInfoMapper>();
+            
+            services.AddTransient<IGetCustomerOrdersRequestValidator, GetCustomerOrdersRequestValidator>();
+            services.AddTransient<IGetCustomerOrdersCommand, GetCustomerOrdersCommand>();
+            services.AddTransient<IGetCustomerOrdersMapper, GetCustomerOrdersMapper>();
 
             services.AddTransient<IDbBakedGoodToGetBakedGoodResponseMapper, DbBakedGoodToGetBakedGoodResponseMapper>();
             services.AddTransient<IDbOrderToGetOrderResponseMapper, DbOrderToGetOrderResponseMapper>();
+
             
+            services.AddTransient<IUpdateCustomerPersonalInfoCommand, UpdateCustomerPersonalInfoCommand>();
+            services
+                .AddTransient<IDbCustomerToEditCustomerPersonalInfoResponse,
+                    DbCustomerToEditCustomerPersonalInfoResponse>();
+            
+            
+            //services.AddTransient<DbCustomer>(new DbCustomer());
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClientService", Version = "v1" });

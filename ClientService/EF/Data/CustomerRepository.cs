@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ClientService.EF.Data.Interfaces;
 using ClientService.EF.DbModels;
+using ClientService.Models.Requests;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientService.EF.Data
 {
@@ -27,49 +24,28 @@ namespace ClientService.EF.Data
         /// Create new user.
         /// </summary>
         /// <param name="customer"> Customer to create. </param>
-        public Guid? Create(DbCustomer customer)
+        public async Task<Guid?> CreateAsync(DbCustomer customer)
         {
             _context.Customers.Add(customer);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return customer.Id;
         }
 
         /// <summary>
         /// Gets customer personal data.
         /// </summary>
-        public DbCustomer Read(string login)
+        public Task<DbCustomer> ReadAsync(string login)
         {
             return _context.Customers
                 .Include(customer => customer.Orders)
                 .ThenInclude(orders => orders.BakedGoodOrders)
                 .ThenInclude(bakedGoods => bakedGoods.BakedGood)
-                .FirstOrDefault(customer => customer.Login == login);
+                .FirstOrDefaultAsync(customer => customer.Login == login);
         }
-        
-        /// <summary>
-        /// Edits customer's data.
-        /// </summary>
-        /// <param name="customerToEditId"> Guid of the customer who's data will be updated. </param>
-        /// <param name="customer"> New customer data. </param>
-        /// <returns> If user to update was found: this user's Guid, otherwise: null. </returns>
-        public Guid? Update(Guid customerToEditId, DbCustomer customer)
+
+        public async Task<DbCustomer> UpdateAsync(EditCustomerPersonalInfoRequest customerToEditRequest, DbCustomer customer)
         {
-            DbCustomer oldCustomer = _context.Customers.Find(customerToEditId);
-            if (oldCustomer is null)
-            {
-                return null;
-            }
-            EntityEntry<DbCustomer> customerToEdit = _context.Customers.Update(oldCustomer)!;
-            customerToEdit.Entity.Login= customer.Login;
-            customerToEdit.Entity.FirstName = customer.FirstName;
-            customerToEdit.Entity.SecondName = customer.SecondName;
-            _context.SaveChanges();
-            return _context.Customers.Find(customerToEditId).Id;
-        }
-        
-        public Guid? Update2(Guid customerToEditId, DbCustomer customer)
-        {
-            DbCustomer customerToEdit = _context.Customers.FirstOrDefault(x => x.Id == customerToEditId);
+            DbCustomer customerToEdit = await _context.Customers.FirstOrDefaultAsync(x => x.Id == customerToEditRequest.CustomerId);
             if (customerToEdit is null)
             {
                 return null;
@@ -77,8 +53,8 @@ namespace ClientService.EF.Data
             customerToEdit.Login= customer.Login;
             customerToEdit.FirstName = customer.FirstName;
             customerToEdit.SecondName = customer.SecondName;
-            _context.SaveChanges();
-            return _context.Customers.Find(customerToEditId).Id;
+            await _context.SaveChangesAsync();
+            return await _context.Customers.FindAsync(customerToEditRequest.CustomerId);
         }
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ClientService.Models.Responses
 {
-    public record GetCustomerInfoResponse()
+    public record GetCustomerOrdersResponse()
     {
         public bool IsSuccess { get; set; } = true;
         public List<string> Errors { get; set; }
