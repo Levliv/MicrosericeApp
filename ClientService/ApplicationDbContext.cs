@@ -11,7 +11,7 @@ namespace ClientService
             
         }
 
-        public DbSet<DbCustomer> Customers { get; set; } = null!;
+        public DbSet<DbCustomer> Customers { get; set; }
         public DbSet<DbBakedGood> BakedGoods { get; set; }
         public DbSet<DbOrder> Orders { get; set; }
         public DbSet<DbBakedGoodOrder> BakedGoodsOrders { get; set; }

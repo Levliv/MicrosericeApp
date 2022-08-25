@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using ClientService.Business;
 using ClientService.Business.Interfaces;
 using ClientService.EF.Data;
@@ -30,7 +31,11 @@ namespace ClientService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string dbConnectionString = Configuration.GetConnectionString("SqlServerConnectionString");
+            string dbConnectionString = Configuration.GetConnectionString("DefaultSqlServerConnectionString");;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                dbConnectionString = Configuration.GetConnectionString("SqlServerConnectionStringForLinux");
+            }
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(dbConnectionString));
             services.AddControllers();
             
@@ -51,15 +56,11 @@ namespace ClientService
 
             services.AddTransient<IDbBakedGoodToGetBakedGoodResponseMapper, DbBakedGoodToGetBakedGoodResponseMapper>();
             services.AddTransient<IDbOrderToGetOrderResponseMapper, DbOrderToGetOrderResponseMapper>();
-
             
             services.AddTransient<IUpdateCustomerPersonalInfoCommand, UpdateCustomerPersonalInfoCommand>();
             services
                 .AddTransient<IDbCustomerToEditCustomerPersonalInfoResponse,
                     DbCustomerToEditCustomerPersonalInfoResponse>();
-            
-            
-            //services.AddTransient<DbCustomer>(new DbCustomer());
 
             services.AddSwaggerGen(c =>
             {
