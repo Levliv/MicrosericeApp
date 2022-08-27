@@ -21,18 +21,20 @@ public class UpdateCustomerPersonalInfoCommand : IUpdateCustomerPersonalInfoComm
     public UpdateCustomerPersonalInfoCommand(
         ICustomerRepository customerRepository,
         IDbCreateCustomerMapper createCustomerMapper,
-        IDbCustomerToEditCustomerPersonalInfoResponse editCustomerPersonalInfoResponse,
-        ICreateCustomerRequestValidator createCustomerRequestValidator)
+        IDbCustomerToEditCustomerPersonalInfoResponse editCustomerPersonalInfoResponse
+        //ICreateCustomerRequestValidator createCustomerRequestValidator
+        )
     {
         _customerRepository = customerRepository;
         _createCustomerMapper = createCustomerMapper;
         _editCustomerPersonalInfoResponse = editCustomerPersonalInfoResponse;
-        _createCustomerRequestValidator = createCustomerRequestValidator;
+        //_createCustomerRequestValidator = createCustomerRequestValidator;
     }
 
     public async Task<EditCustomerPersonalInfoResponse> ExecuteAsync(EditCustomerPersonalInfoRequest request, CreateCustomerRequest customerNewInfo)
     {
-        ValidationResult validationResult = await _createCustomerRequestValidator.ValidateAsync(customerNewInfo);
+        //ValidationResult validationResult = await _createCustomerRequestValidator.ValidateAsync(customerNewInfo);
+        ValidationResult validationResult = new ValidationResult();
         if (!validationResult.IsValid)
         {
             return new EditCustomerPersonalInfoResponse

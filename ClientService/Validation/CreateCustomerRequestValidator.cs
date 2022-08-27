@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using ClientService.EF.Data.Interfaces;
 using ClientService.Models.Requests;
 using ClientService.Validation.Interfaces;
@@ -13,8 +14,8 @@ namespace ClientService.Validation
         
         public CreateCustomerRequestValidator(
             ICustomerRepository customerRepository)
-        {
-            RuleFor(request => request.Login)
+        { 
+            RuleFor(request =>request.Login)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Login can't be empty")
@@ -22,7 +23,7 @@ namespace ClientService.Validation
                 .WithMessage("Login can contain only 50 symbols")
                 .Matches(_loginRegex)
                 .WithMessage("Login can contain only letters and numbers")
-                .Must(login => !customerRepository.DoesSameLoginExist(login))
+                .Must( login => customerRepository.DoesSameLoginExist(login))
                 .WithMessage("This login already taken.");
                 
             RuleFor(request => request.FirstName)

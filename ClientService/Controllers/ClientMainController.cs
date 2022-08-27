@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using BrokerRequests;
 using ClientService.Business.Interfaces;
 using ClientService.EF.Data;
 using ClientService.Models.Requests;
@@ -19,7 +20,7 @@ namespace ClientService.Controllers
         {
             _context = context;
         }
-        
+
         [HttpPost("CreateCustomer")]
         public async Task<CreateCustomerResponse> CreateNewCustomer(
             [FromServices] ICreateCustomerCommand command,

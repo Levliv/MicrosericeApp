@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using ClientService.Business;
 using ClientService.Business.Interfaces;
+using ClientService.Consumers;
 using ClientService.EF.Data;
 using ClientService.EF.Data.Interfaces;
 using ClientService.Mappers;
@@ -9,6 +10,8 @@ using ClientService.Models.Requests;
 using ClientService.Validation;
 using ClientService.Validation.Interfaces;
 using FluentValidation;
+using MassTransit;
+using MassTransit.MultiBus;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +41,22 @@ namespace ClientService
             }
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(dbConnectionString));
             services.AddControllers();
+
+            services.AddMassTransit(massTransit =>
+            {
+                massTransit.AddConsumer<GetExampleConsumer>();
+                massTransit.UsingRabbitMq((context, config) =>
+                {
+                    config.Host("localhost", "/", host =>
+                    {
+                        host.Username("guest");
+                        host.Password("guest");
+                    });
+                    
+                    config.ReceiveEndpoint("getexample", ep => ep.ConfigureConsumer<GetExampleConsumer>(context));
+                });
+            });
+            services.AddMassTransitHostedService();
             
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             
